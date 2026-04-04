@@ -27,7 +27,6 @@
   test/theraven.txt decrypted
   secret: /n6hOiIoIg/qaQFQVMyyqNUB0pDAZmPyLblU/nKz4vg=
 
-
   > jsondatafile init 
   file created at config/secret.json  // create default secret
 
