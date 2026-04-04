@@ -124,6 +124,8 @@ if (command == 'show') {
   }
 }
 
+
+
 if (command == 'expose') {
   var file = new JSONDataFile(options);
   //console.log(file);
@@ -138,6 +140,7 @@ if (command == 'expose') {
     }
   })
 }
+
 
 
 if (command == 'conceal') {
@@ -156,6 +159,9 @@ if (command == 'conceal') {
 }
 
 
+
 if (command == 'usage') {
   console.log(fs.readFileSync(path.join(__dirname, '..', 'usage.txt')).toString());
 }
+
+
