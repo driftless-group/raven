@@ -19,7 +19,7 @@
 
   > jsondatafile conceal -f theraven.txt
 
-  file test/theraven.txt encrypted
+  test/theraven.txt encrypted
   secret: /n6hOiIoIg/qaQFQVMyyqNUB0pDAZmPyLblU/nKz4vg=
 
   > jsondatafile expose -f theraven.txt -s "/n6hOiIoIg/qaQFQVMyyqNUB0pDAZmPyLblU/nKz4vg="

@@ -109,7 +109,7 @@ if (command == 'conceal') {
   //console.log(file);
   file.conceal().then(() => {
     console.log('');
-    console.log('file', file.shortPath(), 'encrypted');
+    console.log(file.shortPath(), 'encrypted');
     console.log('secret:', file.secret);
     console.log('');
   })
