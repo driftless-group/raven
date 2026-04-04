@@ -19,8 +19,8 @@ Commands
 
     init       prepares new project with config/secret.json
     generate   overwrites old secret
-    thaw       decrypts encrypted file in place
-    freeze     encrypts file                    
+    expose     decrypts encrypted file in place
+    conceal    encrypts file                    
     encrypt    encrypts data passed into the bin
     decrypt    decrypts data passed into the bin
     secret     generates a secret to use to encrypt data

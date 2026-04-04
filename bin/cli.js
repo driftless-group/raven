@@ -94,7 +94,7 @@ if (command == 'show') {
 
 if (command == 'expose') {
   var file = new JSONDataFile(options);
-  //console.log(file);
+  console.log(file);
   file.expose().then(() => {   
     console.log('');
     console.log(file.shortPath(), 'decrypted'); 
@@ -106,7 +106,7 @@ if (command == 'expose') {
 
 if (command == 'conceal') {
   var file = new JSONDataFile(options);
-  //console.log(file);
+  console.log(file);
   file.conceal().then(() => {
     console.log('');
     console.log(file.shortPath(), 'encrypted');

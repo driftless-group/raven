@@ -8,6 +8,8 @@ class JSONDataFile {
   constructor(options={}) {
     Object.assign(this, options)
 
+    console.log(this);
+
     if (this.data != undefined && typeof this.data == 'string') {
       try {
         this.data = JSON.parse(this.data);
@@ -20,10 +22,21 @@ class JSONDataFile {
       this.algorithm = 'aes-256-gcm';
     }
 
+    if (this.secret == undefined && JSONDataFile.hasFile()) {
+      this.populateFromFile();
+    } 
+    
     if (this.secret == undefined) {
       this.secret = crypto.randomBytes(32).toString('base64');
     }
 
+    console.log(this);
+  }
+  
+  populateFromFile() {
+    var data = fs.readFileSync(JSONDataFile.secretFile()).toString();
+    var json = JSON.parse(data);
+    this.secret = json.secret;
   }
 
   shortPath() {
