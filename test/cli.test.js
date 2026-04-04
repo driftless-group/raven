@@ -17,7 +17,7 @@ var defaults = {
   secret: 'ffdnZY17Fw+sup2+lhOOt6PW++/RkLTXRaLL3RJsjzE='
 }
 
-describe('jsondatafile:cli', function() {
+describe('raven', function() {
 
   describe('human', function() {
     it('secret', function(done) {

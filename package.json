@@ -4,8 +4,7 @@
   "description": "",
   "homepage": "https://github.com/driftless-group/jsondatafile",
   "bin": {
-    "raven": "./bin/cli.js",
-    "jsondatafile": "./bin/cli.js"
+    "raven": "./bin/cli.js"
   },
   "repository": {
     "type": "git",
