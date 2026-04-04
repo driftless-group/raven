@@ -2,10 +2,6 @@
 # jsondatafile
 
 ---
- 
- For a strange reason, this isn't installing as an executable on my computer.  Maybe it isn't in the path?  Seems like it should work.  When I install gulp globally it works.  No sure what the problem is.  Maybe npm just doesn't like me?
-
----
 
 ```bash
    npm install -g @drifted/jsondatafile 
