@@ -38,5 +38,19 @@
   > jsondatafile generate
   file created at config/secret.json  # force new file to be created
 
+  > jsondatafile show
+  {
+    "secret": "O9JorHTlz2Wk+oaGq1XpLZzYxwblzlYd3+No7l8eupQ="
+  }
+
+  > jsondatafile conceal -f theraven.txt
+
+  test/theraven.txt encrypted
+  secret: O9JorHTlz2Wk+oaGq1XpLZzYxwblzlYd3+No7l8eupQ=
+
+  > jsondatafile expose -f theraven.txt
+
+  test/theraven.txt decrypted
+  secret: O9JorHTlz2Wk+oaGq1XpLZzYxwblzlYd3+No7l8eupQ=
 
 ```
