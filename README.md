@@ -30,13 +30,13 @@
   secret: /n6hOiIoIg/qaQFQVMyyqNUB0pDAZmPyLblU/nKz4vg=
 
   > jsondatafile init 
-  file created at config/secret.json  // create default secret
+  file created at config/secret.json  # create default secret
 
   > jsondatafile init
-  config/secret.json already exists. // won't overwrite existing
+  config/secret.json already exists.  # won't overwrite existing
 
   > jsondatafile generate
-  file created at config/secret.json // force new file to be created
+  file created at config/secret.json  # force new file to be created
 
 
 ```
