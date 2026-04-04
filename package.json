@@ -1,7 +1,8 @@
 {
   "name": "@drifted/jsondatafile",
-  "version": "0.0.16",
+  "version": "0.0.18",
   "description": "",
+  "homepage": "https://github.com/driftless-group/jsondatafile",
   "bin": {
     "raven": "./bin/cli.js",
     "jsondatafile": "./bin/cli.js"
