@@ -3,7 +3,7 @@
   "version": "0.0.12",
   "description": "",
   "bin": {
-    "raven": "./bin/cli.js"
+    "raven": "./bin/cli.js",
     "jsondatafile": "./bin/cli.js"
   },
   "repository": {
