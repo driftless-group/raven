@@ -1,29 +1,27 @@
 {
   "name": "@drifted/jsondatafile",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
-  
   "bin": {
     "jsondatafile": "./bin/cli.js"
   },
-  
   "repository": {
     "type": "git",
     "url": "@drifted/jsondatafile"
   },
-  
   "license": "UNLICENSED",
   "author": "Scott Ballantyne",
   "type": "commonjs",
   "main": "index.js",
-
   "scripts": {
     "test": "mocha -w",
     "encrypt": "./bin/file.js encrypt",
     "decrypt": "./bin/file.js decrypt"
   },
-  
   "devDependencies": {
     "@drifted/qa": "^0.0.5"
+  },
+  "dependencies": {
+    "carrier-pigeon": "^0.1.11"
   }
 }
