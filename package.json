@@ -1,10 +1,10 @@
 {
   "name": "@drifted/jsondatafile",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   
   "bin": {
-    "jsondatafile": "./bin/file.js"
+    "jsondatafile": "./bin/cli.js"
   },
   
   "repository": {
