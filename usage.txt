@@ -1,5 +1,5 @@
 
-jsondatafile
+raven
 
     This is a bin that is intended to make it easy to hide environment variables 
     so that they aren't clear text.  It should be able to also encrypt and decrypt 
@@ -13,7 +13,7 @@ Synopsis
 
 Usage
     
-    jsondatafile command [options]
+    raven command [options]
 
 Commands
 
