@@ -4,6 +4,7 @@
   "description": "",
   "bin": {
     "raven": "./bin/cli.js"
+    "jsondatafile": "./bin/cli.js"
   },
   "repository": {
     "type": "git",
