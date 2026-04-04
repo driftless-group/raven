@@ -8,6 +8,8 @@
 ```
 
 ```bash
+  > jsondatafile usage
+
   > jsondatafile secret 
   secret: fVu1houhxJS0QeIGSURG0Mzm1C8o3QedhRETu8/ZVM4=
 
