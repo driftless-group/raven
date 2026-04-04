@@ -8,8 +8,6 @@ class JSONDataFile {
   constructor(options={}) {
     Object.assign(this, options)
 
-    //console.log(this);
-
     if (this.data != undefined && typeof this.data == 'string') {
       try {
         this.data = JSON.parse(this.data);
@@ -29,8 +27,6 @@ class JSONDataFile {
     if (this.secret == undefined) {
       this.secret = crypto.randomBytes(32).toString('base64');
     }
-
-    //console.log(this);
   }
   
   populateFromFile() {
@@ -138,9 +134,9 @@ class JSONDataFile {
         var success = true;
 
         if (error) {
+          success = false;
           reject({success, error});
         } else {
-          var success = true;
           resolve({success});
         }
       });    
