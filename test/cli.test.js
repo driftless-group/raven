@@ -99,7 +99,7 @@ describe('jsondatafile:cli', function() {
       }).catch(doneMessage(done));
     })
 
-    it('repeated concealing/exposing', function(done) {
+    it('repeatedly concealing/exposing', function(done) {
       var secret = JSONDataFile.secret();
       var file = path.join(__dirname, 'theraven.txt');
       var initial = fs.readFileSync(file).toString();
