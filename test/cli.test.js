@@ -69,7 +69,7 @@ describe('jsondatafile:cli', function() {
 
   describe('json', function() {
     it('show', function(done) {
-      run('show').then((stdout) => {
+      run('show', '-j').then((stdout) => {
         var json = JSON.parse(stdout);
         
         assert.equal(json.secret.length, 44);
@@ -85,6 +85,7 @@ describe('jsondatafile:cli', function() {
       var secret = JSONDataFile.secret();
       var file = path.join(__dirname, 'theraven.txt');
       var initial = fs.readFileSync(file).toString();
+      
       run('conceal', '-f', file, '-s', secret).then(() => {
         var encrypted = fs.readFileSync(file).toString();
         run('expose', '-f', file, '-s', secret).then(() => {

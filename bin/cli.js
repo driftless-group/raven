@@ -17,7 +17,6 @@ parser.option('location', {type: 'file', default: process.cwd()});
 parser.option('verbose', {default: false});
 
 var options = parser.parse(process.argv);
-
 var command = options.command;
 delete options.command;
 
@@ -25,9 +24,11 @@ process.chdir(options.location);
 delete options.location;
 
 
+
+
 if (options.verbose) {
-  console.log('command:',command);
-  console.log('options:',options);
+    console.log('command:',command);
+    console.log('options:',options);
 }
 
 
@@ -36,7 +37,11 @@ if (command == 'encrypt') {
   var file   = new JSONDataFile(options);
 
   var data = file.encrypt(options.data);
-  console.log('data:', data);
+  if (options.json) {
+    console.log(JSON.stringify({action: 'encrypt', options: options, data: data}, null, 2))
+  } else {
+    console.log('data:', data);
+  }
 }
 
 
@@ -56,15 +61,29 @@ if (command == 'decrypt') {
       console.log(error);
     }
   }
-
-  console.log(json)
+  if (options.json) {
+    console.log(JSON.stringify({action: 'decrypt', options: options, data: json}, null, 2))
+  } else {
+    console.log(json);
+  }
 }
 
 
 
 if (command == 'generate') {
   JSONDataFile.generate().then((generated) => {
-    console.log('file created at', JSONDataFile.secretFile().replace(process.cwd()+path.sep, ''));
+    if (options.json) {
+       
+       console.log(JSON.stringify({
+         action: 'generate', 
+         options: options, 
+         location: process.cwd(), 
+         success: generated
+       }, null, 2))
+
+    } else {
+      console.log('file created at', JSONDataFile.secretFile().replace(process.cwd()+path.sep, ''));
+    }
   })  
 }
 
@@ -72,10 +91,14 @@ if (command == 'generate') {
 
 if (command == 'init') {
   JSONDataFile.init().then((initialized) => {
-    if (initialized) {
-      console.log('file created at', JSONDataFile.secretFile().replace(process.cwd()+path.sep, ''));
+    if (options.json) {
+      console.log(JSON.stringify({action: 'init', options: options, location: process.cwd(), success: initialized}, null, 2))
     } else {
-      console.log(JSONDataFile.secretFile().replace(process.cwd()+path.sep, ''), 'already exists.');
+      if (initialized) {
+        console.log('file created at', JSONDataFile.secretFile().replace(process.cwd()+path.sep, ''));
+      } else {
+        console.log(JSONDataFile.secretFile().replace(process.cwd()+path.sep, ''), 'already exists.');
+      }
     }
   })  
 }
@@ -83,23 +106,36 @@ if (command == 'init') {
 
 
 if (command == 'secret') {
-  console.log('secret:', JSONDataFile.secret());
+  if (options.json) {
+    console.log(JSON.stringify({ secret: JSONDataFile.secret() }, null, 2));
+  } else {
+    console.log('secret:', JSONDataFile.secret());
+  }
 }
 
 
 
 if (command == 'show') {
-  console.log(JSONDataFile.show());
+  var json = JSON.parse(JSONDataFile.show());
+  if (options.json) {
+    console.log(JSON.stringify(json, null, 2));
+  } else {
+    console.log('secret:', json.secret);
+  }
 }
 
 if (command == 'expose') {
   var file = new JSONDataFile(options);
   //console.log(file);
   file.expose().then(() => {   
-    console.log('');
-    console.log(file.shortPath(), 'decrypted'); 
-    console.log('secret:', file.secret);
-    console.log('');
+    if (options.json) {
+      console.log(JSON.stringify({file: file.shortPath, action: 'expose', options: options, secret: file.secret}, null, 2))
+    } else {
+      console.log('');
+      console.log(file.shortPath(), 'decrypted'); 
+      console.log('secret:', file.secret);
+      console.log('');
+    }
   })
 }
 
@@ -108,10 +144,14 @@ if (command == 'conceal') {
   var file = new JSONDataFile(options);
   //console.log(file);
   file.conceal().then(() => {
-    console.log('');
-    console.log(file.shortPath(), 'encrypted');
-    console.log('secret:', file.secret);
-    console.log('');
+    if (options.json) {
+      console.log(JSON.stringify({file: file.shortPath, action: 'conceal', options: options, secret: file.secret}, null, 2))
+    } else {
+      console.log('');
+      console.log(file.shortPath(), 'encrypted');
+      console.log('secret:', file.secret);
+      console.log('');
+    }
   })
 }
 
