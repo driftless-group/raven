@@ -21,12 +21,12 @@
 
   > raven conceal -f theraven.txt
 
-  test/theraven.txt encrypted
+  theraven.txt encrypted
   secret: /n6hOiIoIg/qaQFQVMyyqNUB0pDAZmPyLblU/nKz4vg=
 
   > raven expose -f theraven.txt -s "/n6hOiIoIg/qaQFQVMyyqNUB0pDAZmPyLblU/nKz4vg="
 
-  test/theraven.txt decrypted
+  theraven.txt decrypted
   secret: /n6hOiIoIg/qaQFQVMyyqNUB0pDAZmPyLblU/nKz4vg=
 
   > raven init 
@@ -45,12 +45,12 @@
 
   > raven conceal -f theraven.txt
 
-  test/theraven.txt encrypted
+  theraven.txt encrypted
   secret: O9JorHTlz2Wk+oaGq1XpLZzYxwblzlYd3+No7l8eupQ=
 
   > raven expose -f theraven.txt
 
-  test/theraven.txt decrypted
+  theraven.txt decrypted
   secret: O9JorHTlz2Wk+oaGq1XpLZzYxwblzlYd3+No7l8eupQ=
 
 ```
