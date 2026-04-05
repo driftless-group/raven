@@ -19,7 +19,7 @@ class RavenDataFile {
       this.algorithm = 'aes-256-gcm';
     }
 
-    if (this.secret == undefined && JSONDataFile.hasFile()) {
+    if (this.secret == undefined && RavenDataFile.hasFile()) {
       this.populateSecretFromFile();
     } 
     
@@ -29,7 +29,7 @@ class RavenDataFile {
   }
   
   populateSecretFromFile() {
-    var data = fs.readFileSync(JSONDataFile.secretFile()).toString();
+    var data = fs.readFileSync(RavenDataFile.secretFile()).toString();
     var json = JSON.parse(data);
     this.secret = json.secret;
   }
@@ -47,7 +47,7 @@ class RavenDataFile {
     }
 
     return new Promise(async(resolve) => {
-      var file = new JSONDataFile(options);
+      var file = new RavenDataFile(options);
       var times = 0;
 
       await file.read();
