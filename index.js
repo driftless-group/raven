@@ -1,14 +1,12 @@
 const path = require('path');
 const crypto = require('crypto');
 const fs = require('fs');
-const { fileTypeFromBuffer } = require('file-type');
 const ivLength = 16;
 const { Readable, pipeline, buffer } = require('stream');
 const Bufferable = require(path.join(__dirname, 'bufferable'));
-const { isUtf8, isAscii } = require('node:buffer');
+
 
 class RavenDataFile {
-
 
   constructor(options={}) {
     Object.assign(this, options)
@@ -234,28 +232,27 @@ class RavenDataFile {
       const iv = RavenDataFile.createIV();
       const cipher = self.cipher({iv: iv, secret: self.secret, algorithm: self.algorithm});
 
-     self.read().then(async (buffer) => {
+      self.read().then(async (buffer) => {
         var readable = Readable.from(buffer)
-        const output = new Bufferable();
-        readable.pipe(cipher).pipe(output);
+        const collector = new Bufferable();
+        readable.pipe(cipher).pipe(collector);
 
-        output.on('finish', async() => {
+        collector.on('finish', async() => {
           const authTag = cipher.getAuthTag().toString('hex');    
-          var encrypted = output.buffer;
-
+          var encrypted = collector.buffer;
 
           fs.truncate(self.file, 0, () => {
-            const stream = fs.createWriteStream(self.file, { flags: 'a' });
-            stream.write(`${iv.toString('hex')}:${authTag}:`);
-            stream.write(encrypted.toString('base64'));
-            stream.end(); 
+            const destination = fs.createWriteStream(self.file, { flags: 'a' });
+            destination.write(`${iv.toString('hex')}:${authTag}:`);
+            destination.write(encrypted.toString('base64'));
+            destination.end(); 
 
-            stream.on('finish', () => {
+            destination.on('finish', () => {
               resolve({success: true});
             });
           })
         });
-     }) 
+      }) 
     })
   }
 
@@ -265,16 +262,17 @@ class RavenDataFile {
     return new Promise(async(resolve) => {
       self.read().then((buffer) => {
         const [ivHex, authTagHex, encryptedText] = buffer.toString().split(':');
-      
+
         var readable = Readable.from(Buffer.from(encryptedText, 'base64'))
-        const output = new Bufferable();
+        const collector = new Bufferable();
+        
         const decipher = self.decipher({iv:ivHex, secret: self.secret, algorithm: self.algorithm});
         decipher.setAuthTag(Buffer.from(authTagHex, 'hex'));
+        
+        readable.pipe(decipher).pipe(collector);
 
-        readable.pipe(decipher).pipe(output);
-
-        output.on('finish', () => {
-          self.data = output.buffer;
+        collector.on('finish', () => {
+          self.data = collector.buffer;
 
           self.save().then(() => {
             resolve({success: true});
