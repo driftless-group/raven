@@ -8,18 +8,36 @@ var defaults = {
   secret: 'ffdnZY17Fw+sup2+lhOOt6PW++/RkLTXRaLL3RJsjzE='
 }
 
-// this seems to work.  i should write a test to make sure that it works
-//JSONDataFile.toEnv({file: path.join(__dirname, '..', 'config', process.env.NODE_ENV+'.json')});
+const {
+  doneMessage
+} = require('@drifted/qa');
+
+const {
+  run, ensure, remove
+} = require(path.join(__dirname, 'helpers'));
+
 
 
 process.chdir(path.join(__dirname, 'workspace'));
 
+console.log(__dirname);
+
+//console.log(process.env)
+
 describe('raven', function() {
   
 
-  it('read', function(done) {
-    
-    done();
+  it('eval', function(done) {
+
+    // this seems to work.  i should write a test to make sure that it works
+    JSONDataFile.eval({
+      secret: defaults.secret,
+      iterations: 2, 
+      file: path.join(__dirname, 'workspace', 'example.json.encrypted')
+    }).then((json) => {
+      done()
+    }).catch(doneMessage(done))
+
   })
 
   it('write', function(done) {

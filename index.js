@@ -51,22 +51,29 @@ class JSONDataFile {
       var times = 0;
 
       await file.read();
-      
-      while(times < options.iterations) {
-        file.data = file.encrypt(file.data)
-        times += 1;
+     
+      while(times < iterations) {
+        try {
+          file.data = file.decrypt(file.data)
+        } catch(error) {
+          //console.log(error);
+        }
+        times = times + 1;
       }
 
-      var json = JSON.parse(file.data.toString());
+      try {
+        file.data = JSON.parse(file.data.trim());
+      } catch(error) {
+        console.log(error);
+      }
 
-      //console.log(json);
-
-      resolve(json)
+      resolve(file.data)
     })
   }
   
   static toEnv(options={}) {
     var self = this;
+    
     return new Promise((resolve) => {
       self.eval(options).then((json) => {
         Object.assign(process.env, json);
