@@ -1,11 +1,16 @@
 const path = require('path');
 const assert = require('assert');
+process.env.NODE_ENV = 'test';
 
 const JSONDataFile = require(path.join(__dirname, '..'));
 
 var defaults = {
   secret: 'ffdnZY17Fw+sup2+lhOOt6PW++/RkLTXRaLL3RJsjzE='
 }
+
+// this seems to work.  i should write a test to make sure that it works
+//JSONDataFile.toEnv({file: path.join(__dirname, '..', 'config', process.env.NODE_ENV+'.json')});
+
 
 process.chdir(path.join(__dirname, 'workspace'));
 

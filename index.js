@@ -7,7 +7,6 @@ const ivLength = 16;
 class JSONDataFile {
   constructor(options={}) {
     Object.assign(this, options)
-
     if (this.data != undefined && typeof this.data == 'string') {
       try {
         this.data = JSON.parse(this.data);
@@ -21,7 +20,7 @@ class JSONDataFile {
     }
 
     if (this.secret == undefined && JSONDataFile.hasFile()) {
-      this.populateFromFile();
+      this.populateSecretFromFile();
     } 
     
     if (this.secret == undefined) {
@@ -29,7 +28,7 @@ class JSONDataFile {
     }
   }
   
-  populateFromFile() {
+  populateSecretFromFile() {
     var data = fs.readFileSync(JSONDataFile.secretFile()).toString();
     var json = JSON.parse(data);
     this.secret = json.secret;
@@ -37,6 +36,44 @@ class JSONDataFile {
 
   shortPath() {
     return this.file.replace(process.cwd()+"/", "")
+  }
+
+  static eval(options={}) {
+    var iterations = 0;
+
+    if (options.iterations != undefined) {
+      iterations = options.iterations;
+      delete options.iterations;
+    }
+
+    return new Promise(async(resolve) => {
+      var file = new JSONDataFile(options);
+      var times = 0;
+
+      await file.read();
+      
+      while(times < options.iterations) {
+        file.data = file.encrypt(file.data)
+        times += 1;
+      }
+
+      var json = JSON.parse(file.data.toString());
+
+      console.log(json);
+
+      resolve(json)
+    })
+  }
+  
+  static toEnv(options={}) {
+    var self = this;
+    console.log(options);
+    return new Promise((resolve) => {
+      self.eval(options).then((json) => {
+        Object.assign(process.env, json);
+        resolve()
+      })
+    })   
   }
 
   static show() {
