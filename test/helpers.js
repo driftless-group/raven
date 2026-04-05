@@ -8,7 +8,7 @@ const crypto = require('crypto');
 
 
 function run(...specifics) {
-  var parts = [process.execPath, path.join(__dirname, '..', 'bin', 'cli.js')].concat(specifics);
+  var parts = [process.execPath, path.join(__dirname, '..', 'bin', 'raven.js')].concat(specifics);
   return new Promise((resolve, reject) => {
     exec(parts.join(' '), (err, stdout, stdin) => {
       if (err) { 

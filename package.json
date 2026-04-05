@@ -4,7 +4,8 @@
   "description": "",
   "homepage": "https://github.com/driftless-group/raven",
   "bin": {
-    "raven": "./bin/cli.js"
+    "craven": "./bin/console.js",
+    "raven": "./bin/raven.js"
   },
   "repository": {
     "type": "git",
