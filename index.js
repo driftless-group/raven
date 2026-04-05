@@ -59,7 +59,7 @@ class JSONDataFile {
 
       var json = JSON.parse(file.data.toString());
 
-      console.log(json);
+      //console.log(json);
 
       resolve(json)
     })
@@ -67,7 +67,6 @@ class JSONDataFile {
   
   static toEnv(options={}) {
     var self = this;
-    console.log(options);
     return new Promise((resolve) => {
       self.eval(options).then((json) => {
         Object.assign(process.env, json);
