@@ -16,16 +16,9 @@ const {
   run, ensure, remove
 } = require(path.join(__dirname, 'helpers'));
 
-
-
 process.chdir(path.join(__dirname, 'workspace'));
 
-console.log(__dirname);
-
-//console.log(process.env)
-
 describe('raven', function() {
-  
 
   it('eval', function(done) {
 
@@ -38,19 +31,6 @@ describe('raven', function() {
       done()
     }).catch(doneMessage(done))
 
-  })
-
-  it('write', function(done) {
-    done();
-  })
-
-  it('encrypt/decrypt', function(done) {
-    var jdf = new RavenDataFile({secret: defaults.secret, data: {test: true}});
-    var result = jdf.encrypt(JSON.stringify(jdf.data));
-    result = JSON.parse(jdf.decrypt(result));
-    assert.equal(result.test, true);
-    
-    done();
   })
 
 

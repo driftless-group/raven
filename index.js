@@ -1,10 +1,15 @@
 const path = require('path');
 const crypto = require('crypto');
 const fs = require('fs');
-
+const { fileTypeFromBuffer } = require('file-type');
 const ivLength = 16;
+const { Readable, pipeline, buffer } = require('stream');
+const Bufferable = require(path.join(__dirname, 'bufferable'));
+const { isUtf8, isAscii } = require('node:buffer');
 
 class RavenDataFile {
+
+
   constructor(options={}) {
     Object.assign(this, options)
 
@@ -20,6 +25,10 @@ class RavenDataFile {
       this.algorithm = 'aes-256-gcm';
     }
 
+    if (this.password != undefined && this.secret == undefined) {
+      this.secret = RavenDataFile.hashPassword(this.password);
+    }
+
     if (this.secret == undefined && RavenDataFile.hasFile()) {
       this.populateSecretFromFile();
     } 
@@ -27,6 +36,7 @@ class RavenDataFile {
     if (this.secret == undefined) {
       this.secret = crypto.randomBytes(32).toString('base64');
     }
+
   }
 
 
@@ -55,7 +65,7 @@ class RavenDataFile {
       }
 
       try {
-        file.data = JSON.parse(file.data.trim());
+        file.data = JSON.parse(file.data.toString());
       } catch(error) {
         console.log(error);
       }
@@ -127,6 +137,9 @@ class RavenDataFile {
     return crypto.randomBytes(32).toString('base64');
   } 
 
+  static hashPassword(password) {
+    return crypto.createHash('sha256').update(password).digest('hex').slice(0, 43)+"=";
+  }
 
   populateSecretFromFile() {
     var data = fs.readFileSync(RavenDataFile.secretFile()).toString();
@@ -139,12 +152,24 @@ class RavenDataFile {
     return this.file.replace(process.cwd()+"/", "")
   }
 
+  cipher(options={}) {
+    //console.log(options);
+    return crypto.createCipheriv(options.algorithm, 
+      Buffer.from(options.secret, 'base64'), 
+      options.iv);
+  }
 
-  encrypt(text) {
+  decipher(options={}) {
+    return crypto.createDecipheriv(options.algorithm, 
+      Buffer.from(options.secret, 'base64'), 
+      Buffer.from(options.iv, 'hex'));
+  }
+
+  encrypt(buffer) {
     const iv = crypto.randomBytes(ivLength);
-    const cipher = crypto.createCipheriv(this.algorithm, Buffer.from(this.secret, 'base64'), iv);
+    const cipher = this.cipher({iv: iv, secret: this.secret, algorithm: this.algorithm});  
 
-    let encrypted = cipher.update(text, 'utf8', 'hex');
+    var encrypted = cipher.update(buffer, 'utf8', 'hex');
     encrypted += cipher.final('hex');
 
     const authTag = cipher.getAuthTag().toString('hex');
@@ -155,19 +180,14 @@ class RavenDataFile {
 
 
   decrypt(encryptedData) {
-    const [ivHex, authTagHex, encryptedText] = encryptedData.split(':');
-
-    const decipher = crypto.createDecipheriv(
-      this.algorithm,
-      Buffer.from(this.secret, 'base64'),
-      Buffer.from(ivHex, 'hex')
-    );
+    const [ivHex, authTagHex, encryptedText] = encryptedData.toString().split(':');
+    const decipher = this.decipher({iv: ivHex, secret: this.secret, algorithm: this.algorithm});
 
     decipher.setAuthTag(Buffer.from(authTagHex, 'hex'));
-
-    let decrypted = decipher.update(encryptedText, 'hex', 'utf8');
-    decrypted += decipher.final('utf8');
     
+    var decrypted = decipher.update(encryptedText, 'hex', 'utf8');
+    decrypted += decipher.final('utf8');
+
     return decrypted;
   }
 
@@ -175,8 +195,13 @@ class RavenDataFile {
   read() {
     var self = this;
 
-    return new Promise(async(resolve) => {
-      fs.readFile(self.file, 'utf8', async (err, data) => {
+    return new Promise(async(resolve, reject) => {
+      if (fs.existsSync(self.file) == false) {
+        return reject(new Error('file doesnt exist.'))
+      }
+      fs.readFile(self.file, {}, async (err, data) => {
+        //self.type = isAscii(data);
+        //console.log('type', self.type);
         self.data = data;      
         
         resolve(data);
@@ -205,13 +230,33 @@ class RavenDataFile {
   conceal() {
     var self = this;
     return new Promise(async(resolve) => {
-      self.read().then((data) => {
-        self.data = self.encrypt(data);
+      const iv = crypto.randomBytes(ivLength);
+      const cipher = self.cipher({iv: iv, secret: self.secret, algorithm: self.algorithm});
 
-        self.save().then((response) => {
-          resolve(response);
-        })
-      }) 
+      //console.log(self);
+
+     self.read().then(async (buffer) => {
+        var readable = Readable.from(buffer)
+        const output = new Bufferable();
+        readable.pipe(cipher).pipe(output);
+
+        output.on('finish', async() => {
+          const authTag = cipher.getAuthTag().toString('hex');    
+          var encrypted = output.buffer;
+
+
+          fs.truncate(self.file, 0, () => {
+            const stream = fs.createWriteStream(self.file, { flags: 'a' });
+            stream.write(`${iv.toString('hex')}:${authTag}:`);
+            stream.write(encrypted.toString('base64'));
+            stream.end(); 
+
+            stream.on('finish', () => {
+              resolve({success: true});
+            });
+          })
+        });
+     }) 
     })
   }
 
@@ -219,12 +264,23 @@ class RavenDataFile {
   expose() {
     var self = this;
     return new Promise(async(resolve) => {
-      self.read().then((data) => {
-        self.data = self.decrypt(data);
-        
-        self.save().then((response) => {
-          resolve(response);
-        })
+      self.read().then((buffer) => {
+        const [ivHex, authTagHex, encryptedText] = buffer.toString().split(':');
+      
+        var readable = Readable.from(Buffer.from(encryptedText, 'base64'))
+        const output = new Bufferable();
+        const decipher = self.decipher({iv:ivHex, secret: self.secret, algorithm: self.algorithm});
+        decipher.setAuthTag(Buffer.from(authTagHex, 'hex'));
+
+        readable.pipe(decipher).pipe(output);
+
+        output.on('finish', () => {
+          self.data = output.buffer;
+
+          self.save().then(() => {
+            resolve({success: true});
+          })
+        });
       })
     })
   }

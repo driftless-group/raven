@@ -10,7 +10,7 @@ const {
 } = require('@drifted/qa');
 
 const {
-  run, ensure, remove
+  compare, run, ensure, remove, copy
 } = require(path.join(__dirname, 'helpers'));
 
 var defaults = {
@@ -18,6 +18,25 @@ var defaults = {
 }
 
 describe('raven', function() {
+
+  before(async() => {
+    var file = path.join(__dirname, 'data', '1984.pdf');
+    var encrypted = path.join(__dirname, 'data','1984.pdf.encrypted');
+
+    if (fs.existsSync(encrypted)) {
+      await remove(encrypted)
+    }
+
+    await copy(file, encrypted); 
+  })
+
+  after(async() => {
+    var encrypted = path.join(__dirname, 'data','1984.pdf.encrypted');
+
+    if (fs.existsSync(encrypted)) {
+      await remove(encrypted)
+    }
+  })
 
   describe('human', function() {
     it('secret', function(done) {
@@ -28,7 +47,7 @@ describe('raven', function() {
         assert.notEqual(secret, undefined);
         
         done();
-      }).catch(console.log)
+      }).catch(doneMessage(done))
     })
     
     it('init', function(done) {
@@ -100,6 +119,8 @@ describe('raven', function() {
       }).catch(doneMessage(done));
     })
 
+
+
     it('repeatedly concealing/exposing', function(done) {
       var secret = RavenDataFile.secret();
       var file = path.join(__dirname, 'theraven.txt');
@@ -125,6 +146,31 @@ describe('raven', function() {
         }).catch(doneMessage(done));
       }).catch(doneMessage(done));
     })
+
+
+
+    it('conceal/expose a pdf', function(done) {
+      var secret = RavenDataFile.secret();
+      var original = path.join(__dirname, 'data', '1984.pdf');
+      var encrypted = path.join(__dirname, 'data', '1984.pdf.encrypted');
+
+      run('conceal', '-f', encrypted, '-s', secret).then(() => {
+        compare(original, encrypted).then((response) => {
+          assert.equal(response.equal, false);
+
+          run('expose', '-f', encrypted, '-s', secret).then(() => {
+            compare(original, encrypted).then((response) => {
+              //console.log(response)
+              assert.equal(response.equal, true);
+              done();
+
+            }).catch(doneMessage(done));
+          }).catch(doneMessage(done));
+        }).catch(doneMessage(done));
+      }).catch(doneMessage(done));
+    })
+
   })
+
 
 })
