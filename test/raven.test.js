@@ -2,7 +2,7 @@ const path = require('path');
 const assert = require('assert');
 process.env.NODE_ENV = 'test';
 
-const JSONDataFile = require(path.join(__dirname, '..'));
+const RavenDataFile = require(path.join(__dirname, '..'));
 
 var defaults = {
   secret: 'ffdnZY17Fw+sup2+lhOOt6PW++/RkLTXRaLL3RJsjzE='
@@ -30,7 +30,7 @@ describe('raven', function() {
   it('eval', function(done) {
 
     // this seems to work.  i should write a test to make sure that it works
-    JSONDataFile.eval({
+    RavenDataFile.eval({
       secret: defaults.secret,
       iterations: 2, 
       file: path.join(__dirname, 'workspace', 'example.json.encrypted')
@@ -45,7 +45,7 @@ describe('raven', function() {
   })
 
   it('encrypt/decrypt', function(done) {
-    var jdf = new JSONDataFile({secret: defaults.secret, data: {test: true}});
+    var jdf = new RavenDataFile({secret: defaults.secret, data: {test: true}});
     var result = jdf.encrypt(JSON.stringify(jdf.data));
     result = JSON.parse(jdf.decrypt(result));
     assert.equal(result.test, true);

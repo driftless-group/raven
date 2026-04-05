@@ -2,7 +2,7 @@ const path = require('path');
 const assert = require('assert');
 const fs = require('fs');
 
-const JSONDataFile = require(path.join(__dirname, '..'));
+const RavenDataFile = require(path.join(__dirname, '..'));
 var { exec } = require('child_process');
 
 const {
@@ -82,7 +82,7 @@ describe('raven', function() {
 
   describe('files', function() {
     it('conceal/expose', function(done) {
-      var secret = JSONDataFile.secret();
+      var secret = RavenDataFile.secret();
       var file = path.join(__dirname, 'theraven.txt');
       var initial = fs.readFileSync(file).toString();
       
@@ -101,7 +101,7 @@ describe('raven', function() {
     })
 
     it('repeatedly concealing/exposing', function(done) {
-      var secret = JSONDataFile.secret();
+      var secret = RavenDataFile.secret();
       var file = path.join(__dirname, 'theraven.txt');
       var initial = fs.readFileSync(file).toString();
       run('conceal', '-f', file, '-s', secret).then(() => {
