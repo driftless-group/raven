@@ -131,7 +131,10 @@ class RavenDataFile {
       });
     })
   }
- 
+
+  static createIV() {
+    return crypto.randomBytes(ivLength);
+  }
 
   static secret() {
     return crypto.randomBytes(32).toString('base64');
@@ -153,7 +156,6 @@ class RavenDataFile {
   }
 
   cipher(options={}) {
-    //console.log(options);
     return crypto.createCipheriv(options.algorithm, 
       Buffer.from(options.secret, 'base64'), 
       options.iv);
@@ -166,7 +168,7 @@ class RavenDataFile {
   }
 
   encrypt(buffer) {
-    const iv = crypto.randomBytes(ivLength);
+    const iv = RavenDataFile.createIV();
     const cipher = this.cipher({iv: iv, secret: this.secret, algorithm: this.algorithm});  
 
     var encrypted = cipher.update(buffer, 'utf8', 'hex');
@@ -229,7 +231,7 @@ class RavenDataFile {
   conceal() {
     var self = this;
     return new Promise(async(resolve) => {
-      const iv = crypto.randomBytes(ivLength);
+      const iv = RavenDataFile.createIV();
       const cipher = self.cipher({iv: iv, secret: self.secret, algorithm: self.algorithm});
 
      self.read().then(async (buffer) => {
