@@ -22,11 +22,9 @@ describe('raven', function() {
   before(async() => {
     var file = path.join(__dirname, 'data', '1984.pdf');
     var encrypted = path.join(__dirname, 'data','1984.pdf.encrypted');
-
     if (fs.existsSync(encrypted)) {
       await remove(encrypted)
-    }
-
+    } 
     await copy(file, encrypted); 
   })
 
@@ -156,6 +154,7 @@ describe('raven', function() {
 
       run('conceal', '-f', encrypted, '-s', secret).then(() => {
         compare(original, encrypted).then((response) => {
+          //console.log(response);
           assert.equal(response.equal, false);
 
           run('expose', '-f', encrypted, '-s', secret).then(() => {

@@ -199,9 +199,8 @@ class RavenDataFile {
       if (fs.existsSync(self.file) == false) {
         return reject(new Error('file doesnt exist.'))
       }
+      
       fs.readFile(self.file, {}, async (err, data) => {
-        //self.type = isAscii(data);
-        //console.log('type', self.type);
         self.data = data;      
         
         resolve(data);
@@ -232,8 +231,6 @@ class RavenDataFile {
     return new Promise(async(resolve) => {
       const iv = crypto.randomBytes(ivLength);
       const cipher = self.cipher({iv: iv, secret: self.secret, algorithm: self.algorithm});
-
-      //console.log(self);
 
      self.read().then(async (buffer) => {
         var readable = Readable.from(buffer)

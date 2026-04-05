@@ -73,13 +73,15 @@ function compare(file1, file2) {
 
   return new Promise((resolve, reject) => {
     if (fs.statSync(file1).size !== fs.statSync(file2).size) {
-      response.equal = true;
+      response.equal = false;
+      response.reason = 'size';
       return resolve(response)
     } else {
       const hash1 = crypto.createHash('sha256').update(fs.readFileSync(file1)).digest('hex');
       const hash2 = crypto.createHash('sha256').update(fs.readFileSync(file2)).digest('hex');
       
       if (hash1 !== hash2) {
+        response.reason = 'hash';
         response.equal = false;
         resolve(response);
       } else {
