@@ -7,6 +7,7 @@ const ivLength = 16;
 class RavenDataFile {
   constructor(options={}) {
     Object.assign(this, options)
+
     if (this.data != undefined && typeof this.data == 'string') {
       try {
         this.data = JSON.parse(this.data);
@@ -27,16 +28,7 @@ class RavenDataFile {
       this.secret = crypto.randomBytes(32).toString('base64');
     }
   }
-  
-  populateSecretFromFile() {
-    var data = fs.readFileSync(RavenDataFile.secretFile()).toString();
-    var json = JSON.parse(data);
-    this.secret = json.secret;
-  }
 
-  shortPath() {
-    return this.file.replace(process.cwd()+"/", "")
-  }
 
   static eval(options={}) {
     var iterations = 0;
@@ -72,6 +64,7 @@ class RavenDataFile {
     })
   }
   
+
   static toEnv(options={}) {
     var self = this;
     
@@ -83,18 +76,22 @@ class RavenDataFile {
     })   
   }
 
+
   static show() {
     return fs.readFileSync(this.secretFile()).toString();
   }
+
 
   static secretFile() {
     return path.join(process.cwd(), 'config', 'secret.json');
   }
 
+
   static hasFile() {
     var exists = fs.existsSync(this.secretFile());
     return exists;
   }
+
 
   static generate() {
     var self = this;
@@ -106,6 +103,7 @@ class RavenDataFile {
       })
     })
   }
+
 
   static init() {
     var self = this;
@@ -123,10 +121,24 @@ class RavenDataFile {
       });
     })
   }
+  
+
+  populateSecretFromFile() {
+    var data = fs.readFileSync(RavenDataFile.secretFile()).toString();
+    var json = JSON.parse(data);
+    this.secret = json.secret;
+  }
+
+
+  shortPath() {
+    return this.file.replace(process.cwd()+"/", "")
+  }
+
 
   static secret() {
     return crypto.randomBytes(32).toString('base64');
   }
+
 
   encrypt(text) {
     const iv = crypto.randomBytes(ivLength);
@@ -140,6 +152,7 @@ class RavenDataFile {
     // Return IV, Auth Tag, and Encrypted data together (often as a single string)
     return `${iv.toString('hex')}:${authTag}:${encrypted}`;
   }
+
 
   decrypt(encryptedData) {
     const [ivHex, authTagHex, encryptedText] = encryptedData.split(':');
@@ -171,6 +184,7 @@ class RavenDataFile {
     })
   }
 
+
   save() {
     var self = this;
     return new Promise(async(resolve) => {
@@ -187,6 +201,7 @@ class RavenDataFile {
     })
   }
 
+
   conceal() {
     var self = this;
     return new Promise(async(resolve) => {
@@ -200,6 +215,7 @@ class RavenDataFile {
     })
   }
 
+
   expose() {
     var self = this;
     return new Promise(async(resolve) => {
@@ -212,6 +228,7 @@ class RavenDataFile {
       })
     })
   }
+
 
 }
 
