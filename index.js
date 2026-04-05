@@ -4,7 +4,7 @@ const fs = require('fs');
 
 const ivLength = 16;
 
-class JSONDataFile {
+class RavenDataFile {
   constructor(options={}) {
     Object.assign(this, options)
     if (this.data != undefined && typeof this.data == 'string') {
@@ -58,6 +58,7 @@ class JSONDataFile {
         } catch(error) {
           //console.log(error);
         }
+
         times = times + 1;
       }
 
@@ -215,7 +216,7 @@ class JSONDataFile {
 }
 
 
-module.exports = JSONDataFile;
+module.exports = RavenDataFile;
 
 
 
