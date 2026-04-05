@@ -1,6 +1,6 @@
 {
   "name": "@drifted/raven",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "description": "",
   "homepage": "https://github.com/driftless-group/raven",
   "bin": {
@@ -15,9 +15,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -w",
-    "encrypt": "./bin/file.js encrypt",
-    "decrypt": "./bin/file.js decrypt"
+    "test": "mocha -w"
   },
   "devDependencies": {
     "@drifted/qa": "^0.0.5"

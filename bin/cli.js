@@ -8,7 +8,7 @@ const JSONDataFile = require(path.join(__dirname, '..'));
 
 
 var parser = new CarrierPigeon({strict: true});
-parser.commands('usage', 'show', 'secret', 'init', 'generate', 'expose', 'conceal', 'encrypt', 'decrypt');
+parser.commands('version', 'usage', 'show', 'secret', 'init', 'generate', 'expose', 'conceal', 'encrypt', 'decrypt');
 parser.option('file', {type: 'file'});
 parser.option('secret', {});
 parser.option('data', {});
@@ -162,6 +162,14 @@ if (command == 'conceal') {
 
 if (command == 'usage') {
   console.log(fs.readFileSync(path.join(__dirname, '..', 'usage.txt')).toString());
+}
+
+
+
+if (command == 'version') {
+  var data = fs.readFileSync(path.join(__dirname, '..', 'package.json')).toString();
+  var json = JSON.parse(data);
+  console.log(json.version)
 }
 
 
