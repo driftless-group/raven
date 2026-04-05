@@ -1,14 +1,14 @@
 {
-  "name": "@drifted/jsondatafile",
-  "version": "0.0.23",
+  "name": "@drifted/raven",
+  "version": "0.0.1",
   "description": "",
-  "homepage": "https://github.com/driftless-group/jsondatafile",
+  "homepage": "https://github.com/driftless-group/raven",
   "bin": {
     "raven": "./bin/cli.js"
   },
   "repository": {
     "type": "git",
-    "url": "@drifted/jsondatafile"
+    "url": "@drifted/raven"
   },
   "license": "UNLICENSED",
   "author": "Scott Ballantyne",

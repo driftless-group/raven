@@ -9,7 +9,7 @@ var defaults = {
 
 process.chdir(path.join(__dirname, 'workspace'));
 
-describe('jsondatafile', function() {
+describe('raven', function() {
   
 
   it('read', function(done) {
