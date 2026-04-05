@@ -54,7 +54,7 @@
   theraven.txt decrypted
   secret: O9JorHTlz2Wk+oaGq1XpLZzYxwblzlYd3+No7l8eupQ=
   
-  // if you use a password it will create a secret to use that is the same every time.
+  # if you use a password it will create a secret to use that is the same every time.
   > raven conceal -f theraven.txt -p 'some clever password'  
   
   theraven.txt encrypted
