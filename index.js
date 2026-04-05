@@ -121,7 +121,12 @@ class RavenDataFile {
       });
     })
   }
-  
+ 
+
+  static secret() {
+    return crypto.randomBytes(32).toString('base64');
+  } 
+
 
   populateSecretFromFile() {
     var data = fs.readFileSync(RavenDataFile.secretFile()).toString();
@@ -132,11 +137,6 @@ class RavenDataFile {
 
   shortPath() {
     return this.file.replace(process.cwd()+"/", "")
-  }
-
-
-  static secret() {
-    return crypto.randomBytes(32).toString('base64');
   }
 
 
