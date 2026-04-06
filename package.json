@@ -1,6 +1,6 @@
 {
   "name": "@drifted/raven",
-  "version": "0.0.14",
+  "version": "0.0.20",
   "description": "",
   "homepage": "https://github.com/driftless-group/raven",
   "bin": {
@@ -11,7 +11,7 @@
     "type": "git",
     "url": "@drifted/raven"
   },
-  "license": "UNLICENSED",
+  "license": "GPL-3.0",
   "author": "Scott Ballantyne",
   "type": "commonjs",
   "main": "index.js",
