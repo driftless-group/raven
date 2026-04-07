@@ -1,6 +1,6 @@
 {
   "name": "@drifted/raven",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "",
   "homepage": "https://github.com/driftless-group/raven",
   "bin": {
@@ -22,8 +22,6 @@
     "@drifted/qa": "^0.0.5"
   },
   "dependencies": {
-    "carrier-pigeon": "^0.1.11",
-    "file-type": "^22.0.0",
-    "read-chunk": "^5.0.0"
+    "carrier-pigeon": "^0.1.11"
   }
 }
