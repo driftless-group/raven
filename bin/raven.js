@@ -99,6 +99,11 @@ if (command == 'generate') {
 
 
 if (command == 'init') {
+  // this isn't used.  need to think of a good way to sanitize 
+  // options that aren't intended for those commands.
+  
+  delete options.text;
+
   RavenDataFile.init().then((initialized) => {
     if (options.json) {
       var json = JSON.parse(RavenDataFile.show());
