@@ -101,7 +101,13 @@ if (command == 'generate') {
 if (command == 'init') {
   RavenDataFile.init().then((initialized) => {
     if (options.json) {
-      console.log(JSON.stringify({action: 'init', options: options, location: process.cwd(), success: initialized}, null, 2))
+      console.log(JSON.stringify({
+        action: 'init', 
+        options: options, 
+        location: process.cwd(), 
+        success: initialized,
+        secret: RavenDataFile.secret()
+      }, null, 2))
     } else {
       if (initialized) {
         console.log('file created at', RavenDataFile.secretFile().replace(process.cwd()+path.sep, ''));
