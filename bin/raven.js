@@ -127,7 +127,7 @@ if (command == 'secret') {
 if (command == 'show') {
   // check errors and give good responses
   if (RavenDataFile.hasFile() == false) {
-    var error = {error: 'There is no secret.  Please generate one or pass on in.'};
+    var error = {error: 'There is no secret.  Please generate one or pass one in.'};
     if (options.json) {
       console.log(JSON.stringify(error, null, 2));
       process.exit(0);
