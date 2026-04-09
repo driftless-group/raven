@@ -1,7 +1,7 @@
 {
   "name": "@drifted/raven",
-  "version": "0.0.52",
-  "description": "",
+  "version": "0.0.54",
+  "description": "file encryption and decryption command line utility meant to be easier to use than other alternatives that I worked on in the past.  I hope people enjoy.",
   "homepage": "https://github.com/driftless-group/raven",
   "bin": {
     "craven": "./bin/console.js",
