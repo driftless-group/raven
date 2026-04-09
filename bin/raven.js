@@ -125,6 +125,9 @@ if (command == 'secret') {
 
 
 if (command == 'show') {
+  if (fs.existsSync(RavenDataFile.secretFile()) == false) {
+    throw new Error('there is no secret file available to use.  please generate one or pass on in.')
+  }
   var json = JSON.parse(RavenDataFile.show());
   if (options.json) {
     console.log(JSON.stringify(json, null, 2));
