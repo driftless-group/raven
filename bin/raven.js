@@ -82,12 +82,13 @@ if (command == 'decrypt') {
 if (command == 'generate') {
   RavenDataFile.generate().then((generated) => {
     if (options.json) {
-       
+       var json = JSON.parse(RavenDataFile.show());
        console.log(JSON.stringify({
          action: 'generate', 
          options: options, 
-         location: process.cwd(), 
-         success: generated
+         location: path.join(process.cwd(), 'config', 'secret.json'), 
+         success: generated,
+         secret: json.secret
        }, null, 2))
 
     } else {
