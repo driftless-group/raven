@@ -105,7 +105,7 @@ if (command == 'init') {
       console.log(JSON.stringify({
         action: 'init', 
         options: options, 
-        location: process.cwd(), 
+        location: path.join(process.cwd(), 'config', 'secret.json'), 
         success: initialized,
         secret: json.secret
       }, null, 2))
