@@ -83,6 +83,7 @@ if (command == 'generate') {
   RavenDataFile.generate().then((generated) => {
     if (options.json) {
        var json = JSON.parse(RavenDataFile.show());
+    
        console.log(JSON.stringify({
          action: 'generate', 
          location: path.join(process.cwd(), 'config', 'secret.json'), 
@@ -102,12 +103,14 @@ if (command == 'init') {
   RavenDataFile.init().then((initialized) => {
     if (options.json) {
       var json = JSON.parse(RavenDataFile.show());
+      
       console.log(JSON.stringify({
         action: 'init', 
         location: path.join(process.cwd(), 'config', 'secret.json'), 
         success: initialized,
         secret: json.secret
       }, null, 2))
+    
     } else {
       if (initialized) {
         console.log('file created at', RavenDataFile.secretFile().replace(process.cwd()+path.sep, ''));
@@ -136,9 +139,11 @@ if (command == 'show') {
     var error = {error: 'There is no secret.  Please generate one or pass one in.'};
     if (options.json) {
       console.log(JSON.stringify(error, null, 2));
+
       process.exit(0);
     } else {
       throw new Error(error.error);
+      
       process.exit(0);
     }
   }
