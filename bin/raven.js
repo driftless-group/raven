@@ -131,6 +131,7 @@ if (command == 'show') {
       console.log(JSON.stringify(error, null, 2));
     } else {
       throw new Error(error.error);
+      process.exit(0);
     }
   }
 
