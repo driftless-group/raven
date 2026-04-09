@@ -101,12 +101,13 @@ if (command == 'generate') {
 if (command == 'init') {
   RavenDataFile.init().then((initialized) => {
     if (options.json) {
+      var json = JSON.parse(RavenDataFile.show());
       console.log(JSON.stringify({
         action: 'init', 
         options: options, 
         location: process.cwd(), 
         success: initialized,
-        secret: RavenDataFile.secret()
+        secret: json.secret
       }, null, 2))
     } else {
       if (initialized) {
