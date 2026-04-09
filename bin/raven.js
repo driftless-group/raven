@@ -85,7 +85,6 @@ if (command == 'generate') {
        var json = JSON.parse(RavenDataFile.show());
        console.log(JSON.stringify({
          action: 'generate', 
-         options: options, 
          location: path.join(process.cwd(), 'config', 'secret.json'), 
          success: generated,
          secret: json.secret
@@ -100,17 +99,11 @@ if (command == 'generate') {
 
 
 if (command == 'init') {
-  // this isn't used.  need to think of a good way to sanitize 
-  // options that aren't intended for those commands.
-  
-  delete options.type;
-
   RavenDataFile.init().then((initialized) => {
     if (options.json) {
       var json = JSON.parse(RavenDataFile.show());
       console.log(JSON.stringify({
         action: 'init', 
-        options: options, 
         location: path.join(process.cwd(), 'config', 'secret.json'), 
         success: initialized,
         secret: json.secret
